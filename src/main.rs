@@ -1,5 +1,7 @@
 use std::env::{args, Args};
 
+//TODO: use of parenthesis
+
 fn operation(num_1: f32, num_2: f32, op: char) -> f32 {
     match op {
         '+' => num_1 + num_2,
@@ -17,25 +19,14 @@ fn is_operation(argument:&String) -> bool{
     false
 }
 
-fn output(num_1: f32, num_2: f32, op: char) -> String {
-    format!(
-        "{} {} {} = {}",
-        num_1,
-        op,
-        num_2,
-        operation(num_1, num_2, op)
-    )
-}
-
-
 
 fn main() {
-    let mut str:Args = args();
-    let mut operators = Vec::<char>::new();
-    let mut numbers = Vec::<f32>::new();
-    str.next(); //Skips de first argument that is the target
+    let mut inputs:Args = args();//Iterator of inputs received by the user, the first input is the target
+    let mut operators = Vec::<char>::new(); //Using as a stack of mathematical operators
+    let mut numbers = Vec::<f32>::new(); //Using as a stack of float numbers
+    inputs.next(); //Skips de first argument that is the target
 
-    for argument in str {
+    for argument in inputs {
         if is_operation(&argument){
             operators.push(argument.chars().next().unwrap());
         }
@@ -48,7 +39,8 @@ fn main() {
         if numbers.len()>1 && operators.len() > 0 {
             let num1:f32 = numbers.pop().unwrap();
             let num2:f32 = numbers.pop().unwrap();
-            let operator:char = operators.pop().unwrap(); 
+            let operator:char = operators.pop().unwrap();
+
             //num2 first because it's the firstest number in comparrision
             let result = operation(num2, num1, operator);
             numbers.push(result);
